@@ -9,7 +9,6 @@
 //1.6  O(n)
 
 
-
 main = (arraySize) => {
     var arrayData = createArray(arraySize);
     timecheck(true)
