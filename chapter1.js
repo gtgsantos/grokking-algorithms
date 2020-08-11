@@ -3,6 +3,12 @@
 //1.1 : log2 7
 //1.2 : log2 8
 
+//1.3: O(log2 n)
+//1.4  O(n)
+//1.5  O(n)
+//1.6  O(n)
+
+
 
 main = (arraySize) => {
     var arrayData = createArray(arraySize);
