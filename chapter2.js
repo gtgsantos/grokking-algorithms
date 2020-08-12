@@ -10,3 +10,25 @@
 
 //2.5 faster
 
+
+import { createArray, timecheck } from './util'
+import {defaultSort, selectionSort} from './sort-algorithms'
+
+
+
+function main(arraySize) {
+    var arrayData = createArray(arraySize);
+  
+    timecheck(true)
+    var defaultSortedArray= defaultSort([...arrayData]);
+    timecheck(false)
+    
+    timecheck(true)
+    var selectionSortedArray = selectionSort([...arrayData]);    
+    timecheck(false)
+
+}
+
+
+
+main(500000)
