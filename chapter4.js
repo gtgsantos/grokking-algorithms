@@ -41,3 +41,12 @@ function biggestNumber(numberArray, returnNumber) {
 
 
     main([999999, 1, 2, 3, 10, 20, 2222, 30, 21])
+
+
+//4.5 - O(n)
+
+//4.6 - O(n)
+
+//4.7 - O(1)
+
+//4.8 - O(n^2)
