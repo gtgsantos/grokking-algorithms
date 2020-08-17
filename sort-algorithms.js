@@ -31,6 +31,29 @@ function selectionSort(numberArray) {
 }
 
 
+function quickSort(numberArray) {
+    if (numberArray.length > 2) {
+        var pivot = numberArray.pop(0)
+        var leftArray = []
+        var rightArray = []
+        numberArray.forEach(element => {
+            if (element > pivot) {
+                rightArray.push(element)
+            } else if (element < pivot) {
+                leftArray.push(element)
+            }
+        });
+        var ret = quickSort(leftArray)
+        ret.push(pivot);
+        ret = ret.concat(quickSort(rightArray))        
+        return ret
+        
+    } else {        
+        return numberArray
+    }
+}
 
-export {defaultSort, selectionSort}
+
+
+export {defaultSort, selectionSort, quickSort}
 

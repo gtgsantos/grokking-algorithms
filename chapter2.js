@@ -12,23 +12,33 @@
 
 
 import { createArray, timecheck } from './util'
-import {defaultSort, selectionSort} from './sort-algorithms'
+import {defaultSort, selectionSort, quickSort} from './sort-algorithms'
 
 
 
 function main(arraySize) {
     var arrayData = createArray(arraySize);
   
-    timecheck(true)
-    var defaultSortedArray= defaultSort([...arrayData]);
-    timecheck(false)
+     timecheck(true)
+     console.log('------')
+     console.log('default js sort')
+     var defaultSortedArray= defaultSort([...arrayData]);
+     timecheck(false)
     
+     timecheck(true)
+     console.log('------')
+     console.log('selection sort')
+     var selectionSortedArray = selectionSort([...arrayData]);    
+     timecheck(false)
+
     timecheck(true)
-    var selectionSortedArray = selectionSort([...arrayData]);    
+    console.log('------')
+     console.log('quickSort sort')
+    var quickSortArray = quickSort([...arrayData])
     timecheck(false)
 
 }
 
 
 
-main(500000)
+main(8000)
