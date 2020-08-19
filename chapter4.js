@@ -5,9 +5,6 @@ function sum(numberArray) {
     return (numberArray.length === 0 ? 0 : (numberArray.pop(0) + sum(numberArray)))
 }
 
-
-//mainSum([1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15])
-
 //4.2
 
 function counter(numberArray) {
