@@ -15,10 +15,13 @@ function graph() {
 }
 
 function breadthFirstGraph(graph, graphNodeNames, nodeTargetName) {    
-    var nodeName = graphNodeNames.pop()
+    // var nodeName = graphNodeNames.pop()
+    var nodeName = graphNodeNames.shift();
+    console.log(nodeName)
     if (nodeName === nodeTargetName) {
         console.log('found it')
-    } else {                
+    } else {               
+
         breadthFirstGraph(graph, graphNodeNames.concat(graph[nodeName]), nodeTargetName)
     }
 }
