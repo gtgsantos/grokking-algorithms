@@ -8,7 +8,7 @@ function graph() {
     graph['claire'] = ['thom', 'jonny']
     graph['anuj'] = []
     graph['peggy'] = []
-    graph['thom'] = ['claire']
+    graph['thom'] = []
     graph['jonny'] = []
 
     return graph;
