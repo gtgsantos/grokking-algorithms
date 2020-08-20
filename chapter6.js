@@ -13,16 +13,27 @@ function graph() {
 
     return graph;
 }
+Array.prototype.unique = function() {
+    var a = this.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
 
+    return a;
+};
 function breadthFirstGraph(graph, graphNodeNames, nodeTargetName) {    
     // var nodeName = graphNodeNames.pop()
+    console.log(graphNodeNames)
     var nodeName = graphNodeNames.shift();
-    console.log(nodeName)
+    // console.log(nodeName)
     if (nodeName === nodeTargetName) {
-        console.log('found it')
+        // console.log('found it')
     } else {               
 
-        breadthFirstGraph(graph, graphNodeNames.concat(graph[nodeName]), nodeTargetName)
+        breadthFirstGraph(graph, graphNodeNames.concat(graph[nodeName]).unique(), nodeTargetName)
     }
 }
 
