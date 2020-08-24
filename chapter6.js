@@ -2,10 +2,18 @@
 function graph() {
     var graph = []
     graph.push()
-    graph['you'] = ['alice', 'bob', 'claire']
-    graph['bob'] = ['anuj', 'peggy']
-    graph['alice'] = ['peggy']
-    graph['claire'] = ['thom', 'jonny']
+    graph['you'] = [{name:'alice', parent: undefined, visited: false}, 
+                    {name:'bob', parent: undefined, visited: false}, 
+                    {name:'claire', parent: undefined, visited: false}]
+
+    graph['bob'] = [{name:'anuj', parent: undefined, visited: false}, 
+                    {name:'peggy', parent: undefined, visited: false}]
+
+    graph['alice'] = [{name:'peggy', parent: undefined, visited: false}]
+
+    graph['claire'] = [{name:'thom', parent: undefined, visited: false}, 
+                       {name:'jonny', parent: undefined, visited: false}]
+
     graph['anuj'] = []
     graph['peggy'] = []
     graph['thom'] = []
@@ -24,17 +32,26 @@ Array.prototype.unique = function() {
 
     return a;
 };
-function breadthFirstGraph(graph, graphNodeNames, nodeTargetName) {    
-    // var nodeName = graphNodeNames.pop()
-    console.log(graphNodeNames)
-    var nodeName = graphNodeNames.shift();
-    // console.log(nodeName)
-    if (nodeName === nodeTargetName) {
-        // console.log('found it')
-    } else {               
 
-        breadthFirstGraph(graph, graphNodeNames.concat(graph[nodeName]).unique(), nodeTargetName)
+function breadthFirstGraph(graph, graphNodeNames, nodeTargetName, parentNode) {    
+    // var node = graphNodeNames.shift();
+    var node = graphNodeNames.pop();    
+    if (!node.visited) {        
+        node.visited = true
+        node.parent = parentNode
+        if (node.name === nodeTargetName) {
+            var found = node  
+            console.log('->', found.name)
+             while (found.parent != undefined) {
+                 found = found.parent            
+                  console.log('->', found.name)
+             } 
+    
+        } else {
+            breadthFirstGraph(graph, graphNodeNames.concat(graph[node.name]).unique(), nodeTargetName, node)
+        }
     }
+
 }
 
 var graph = graph()
