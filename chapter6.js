@@ -57,3 +57,19 @@ function breadthFirstGraph(graph, graphNodeNames, nodeTargetName, parentNode) {
 var graph = graph()
 
 breadthFirstGraph(graph, graph['you'], 'anuj');
+
+
+//exercises
+
+//6.1: S -> () -> F => 2 steps
+
+//6.2: CAB -> CAT -> BAT => 2 steps
+
+//6.3 - 
+// A: invalid
+// B: valid
+// C: invalid
+
+
+//6.4 - Wake up -> brush teeth -> exercise -> shower -> get dressed -> eat breakfast -> pack lunch
+
