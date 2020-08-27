@@ -90,8 +90,9 @@ function weightedGraph() {
 function weightedCosts() {
     var costs = []
 
-    costs['a'] = 6
-    costs['b'] = 2
+    costs['start'] = 0
+    costs['a'] = Number.MAX_SAFE_INTEGER
+    costs['b'] = Number.MAX_SAFE_INTEGER
     costs['fin'] = Number.MAX_SAFE_INTEGER
 
     return costs
