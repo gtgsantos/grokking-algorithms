@@ -110,21 +110,25 @@ function weightedParents() {
 
 function dijkstraGraph(primaryKey, destinyKey, wGraph, wCosts, wParents) {
     
-    getSecondaryKeys(primaryKey, wGraph).forEach((secondaryKey) => {            
-        var edgeWeight = wGraph[recreateKey(primaryKey, secondaryKey)] 
+    getSecondaryKeys(primaryKey, wGraph).forEach((secondaryKey) => {
+        var edgeKey = recreateKey(primaryKey, secondaryKey)
+        var edgeWeight = wGraph[edgeKey] 
+      //  wGraph[edgeKey] = undefined
         
         var beginNodeWeight = wCosts[primaryKey]
         var endNodeWeight = wCosts[secondaryKey]
 
         // console.log('start: ', primaryKey, " - end: ", secondaryKey)
 
-        if ((beginNodeWeight + edgeWeight) < endNodeWeight) {
-            wCosts[secondaryKey] = (beginNodeWeight + edgeWeight)
-            wParents[secondaryKey] = primaryKey
-        }
-        if (secondaryKey !== destinyKey) {
-            dijkstraGraph(secondaryKey, destinyKey, wGraph, wCosts, wParents)
-        }
+        // if (edgeWeight !== undefined) {
+            if ((beginNodeWeight + edgeWeight) < endNodeWeight) {
+                wCosts[secondaryKey] = (beginNodeWeight + edgeWeight)
+                wParents[secondaryKey] = primaryKey
+            }
+            if (secondaryKey !== destinyKey) {
+                dijkstraGraph(secondaryKey, destinyKey, wGraph, wCosts, wParents)
+            }
+        // }
     })
 
 
@@ -136,6 +140,7 @@ var wParents = weightedParents()
 
 console.table(wParents)
 console.log('running dijkstra...')
- dijkstraGraph('start', 'fin', wGraph, wCosts, wParents)
+dijkstraGraph('start', 'fin', wGraph, wCosts, wParents)
 console.table(wParents)
 
+export {dijkstraGraph}
