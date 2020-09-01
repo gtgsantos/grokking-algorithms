@@ -58,8 +58,8 @@ function breadthFirstGraph(graph, graphNodeNames, nodeTargetName, parentNode) {
 
 }
 
-// var graph = graph()
-// breadthFirstGraph(graph, graph['you'], 'anuj');
+//  var graph = graph()
+//  breadthFirstGraph(graph, graph['you'], 'anuj');
 
 
 function getSecondaryKeys(primaryKey, graph) {
@@ -113,35 +113,6 @@ function weightedParents() {
 
     return costs
 }
-//////////////////////////////////////////////////////////
-// function dijkstraGraph(primaryKey, destinyKey, wGraph, wCosts, wParents) {
-
-//     getSecondaryKeys(primaryKey, wGraph).forEach((secondaryKey) => {
-//         var edgeKey = recreateKey(primaryKey, secondaryKey)
-//         var edgeWeight = wGraph[edgeKey] 
-
-//         //console.log('wgraph[',edgeKey,']=', wGraph[edgeKey])
-
-//         var beginNodeWeight = wCosts[primaryKey]
-//         var endNodeWeight = wCosts[secondaryKey]
-//         wGraph[edgeKey, undefined
-
-//         // console.log('start: ', primaryKey, " - end: ", secondaryKey)
-
-//         // if (edgeWeight !== undefined) {
-//             if ((beginNodeWeight + edgeWeight) < endNodeWeight) {
-//                 wCosts[secondaryKey, (beginNodeWeight + edgeWeight)
-//                 wParents[secondaryKey, primaryKey
-//             }
-//             if (secondaryKey !== destinyKey) {
-//                 dijkstraGraph(secondaryKey, destinyKey, wGraph, wCosts, wParents)
-//             }
-//         // }
-//     })
-
-
-// }
-/////////////////////////////////////////////////////////
 
 function getMinorWeight(wCosts, visited) {
     var minorKey = undefined
