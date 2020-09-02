@@ -27,10 +27,15 @@ function timecheck(on) {
     }
 }
 
-function createArray(numParam) {
 
+function createArray(numParam) {
     var maxNum = 1000000000;
     var minNum = 1;
+    return createArrayComplete(numParam, maxNum, minNum)
+}
+
+function createArrayComplete(numParam, maxNum, minNum) {
+
 
     var numberArray = [];
 
@@ -48,4 +53,4 @@ function pickRandomNumber(numberArray) {
 }
 
 
-export  {sleep, timecheck, createArray, pickRandomNumber};
+export  {sleep, timecheck, createArray, createArrayComplete, pickRandomNumber};
