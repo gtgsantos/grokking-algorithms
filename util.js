@@ -52,5 +52,8 @@ function pickRandomNumber(numberArray) {
     return numberArray[pickPosition];
 }
 
+function convertNumberToCharacter(num) {
+    return String.fromCharCode(num + 65)
+}
 
-export  {sleep, timecheck, createArray, createArrayComplete, pickRandomNumber};
+export  {sleep, timecheck, createArray, createArrayComplete, pickRandomNumber, convertNumberToCharacter};
