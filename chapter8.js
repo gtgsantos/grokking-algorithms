@@ -39,6 +39,8 @@ Set.prototype.compareTo = function (comparingSet) {
     return true;
 }
 
+
+
 function createRadios(citiesSet, maxGroupSize) {
     var citiesArray = Array.from(citiesSet)
     var powerSet = new Set()
@@ -51,22 +53,72 @@ function createRadios(citiesSet, maxGroupSize) {
         var citiesInGroup = Math.floor(Math.random() * (maxGroupSize - 1)) + 1
         for (var i = 0; i < citiesInGroup; i++) {
             var city = citiesArray[Math.floor(Math.random() * (citiesSet.size - 0)) + 0]
-
             newGroup.add(city)
             alreadyGroupedCities.add(city)
         }
 
         powerSet.add({'name': ('Radio' + radioNumber++),
-                      'coverage': Array.from(newGroup) })
+                      'coverage': Array.from(newGroup),
+                      'qtyCities': newGroup.size })
     }
     
     return powerSet
 }
 
+Array.prototype.contains = function (comparingArray) {
+    // console.log(comparingArray)    
+    // if (comparingArray.size > 0) {
+        comparingArray.forEach(element1 => {
+            var contains = false
+            console.log('---------------element1: ', element1)
+            this.forEach(element2 => {
+                console.log('element2: ', element2)
+                if (element1 === element2) {
+                    console.log('is true')
+                    contains = true
+                }
+    
+                if (!contains) {
+                    return false
+                }
+            })
+            return true
+        });    
+    // } else {
+    //     return false
+    // }
+    
+}
+
+function getRadiosOptimal(powerSet, citiesSet) {
+    var powerArray = Array.from(powerSet)
+    powerArray.sort((a, b) => (a.qtyCities < b.qtyCities) ? 1 : -1)
+    var totalCities = Array.from(citiesSet)
+
+    var broadcastCities =  []
+    var counter = 0;    
+    // while (!totalCities.contains(broadcastCities)) {        
+    while(counter < (powerArray.length-1)) {        
+        // if (counter < (powerArray.length-1)  && !broadcastCities.contains(powerArray[counter].coverage)) {
+        if ( !broadcastCities.contains(powerArray[counter].coverage)) {
+            broadcastCities = broadcastCities.concat(powerArray[counter].coverage)
+            // console.log('entrou1: ', broadcastCities.length, ' - ', totalCities.length)
+        } else if (counter >= (powerArray.length -1)) {
+            // console.log('entrou2')
+             break
+        }
+
+        counter++
+
+    }
+}
+
 function main() {
     var citiesSet = createCities(20)
     var powerSet = createRadios(citiesSet, 4)
-    console.log(powerSet)
+
+    getRadiosOptimal(powerSet, citiesSet)
+  //  console.log(getRadiosOptimal(powerSet, citiesSet))
 }
 
 main()
