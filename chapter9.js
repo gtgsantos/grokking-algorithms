@@ -13,5 +13,5 @@ function selectBestFit(equipments, sizeTarget) {
         } 
         
     }
-
+    return equipmentSelected
 }
