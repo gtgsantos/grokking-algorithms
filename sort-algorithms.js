@@ -2,6 +2,10 @@ function defaultSort(numberArray) {
     return numberArray.sort((a, b) => a - b)
 }
 
+function reverseDefaultSort(numberArray) {
+    return numberArray.sort((a, b) => b - a)
+}
+
 
 function findSmallest(numberArray) {
     var smallestPosition = 0
@@ -55,5 +59,5 @@ function quickSort(numberArray) {
 
 
 
-export {defaultSort, selectionSort, quickSort}
+export {defaultSort, reverseDefaultSort, selectionSort, quickSort}
 

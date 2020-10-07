@@ -97,4 +97,4 @@ function binarySearchRecursive(lowPosition, topPosition, numberArray, target) {
     }
 }
 
-main(128)
+main(128000)
