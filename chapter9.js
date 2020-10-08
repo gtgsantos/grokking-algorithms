@@ -1,8 +1,7 @@
 //import {reverseDefaultSort} from './sort-algorithms'
 
 function selectPositionBestFit(equipments, limitWeight) {
-    // printmap(equipments)
-    console.log('1')
+        
     for (let index = equipments.length -1 ; index >= 0; index--) {
         
         //const element = array[index];
@@ -36,14 +35,14 @@ function createEquipmentsArray() {
         price: 1500
     }
 
-    equipments[1] = {
+    equipments[2] = {
         name: "laptop",
         // weight: 3,
-        weight: 2,
+        weight: 3,
        price: 2000
     }
 
-    equipments[2] = {
+    equipments[1] = {
         name: "stereo",
         // weight: 4,
         weight: 3,
@@ -55,11 +54,11 @@ function createEquipmentsArray() {
 function main ()  {
      
     var equipments = createEquipmentsArray()
-
     
-    createMapForWeights(equipments)
+    
+     var returnMap = createMapForWeights(equipments)
 
-
+    printmap(returnMap)
     
 
     //console.log('1: ', selectPositionBestFit(equipments, 3))
@@ -69,34 +68,28 @@ function main ()  {
 function createMapForWeights(equipments) {
     var mapStuff = new Map()
     
-    for (let index = 1; index <= equipments.length; index++) {
-        console.log(equipments.length)
+    let equipmentsLength = equipments.length 
+    for (let index = 1; index <= equipmentsLength; index++) {        
+                
         var positionBestFitForWeight = selectPositionBestFit(equipments, index)
-        var bestFitForWeight = equipments[positionBestFitForWeight]
-
-        if (positionBestFitForWeight === 0) {
-            equipments.shift()
-        } else if (positionBestFitForWeight === equipments.length) {
+        var bestFitForWeight = equipments[positionBestFitForWeight]        
+        
+        if (positionBestFitForWeight === 0) {                
+            equipments.shift()  
+        } else if (positionBestFitForWeight === equipments.length) {        
             equipments.pop()
-        } else {
+        } else {       
             equipments.splice(positionBestFitForWeight, 1)
         }
-        var bestFitForWeight = equipments.splice(index)
-
-        mapStuff.set(index, bestFitForWeight)
-       // printmap(mapStuff)
+        mapStuff.set(index, bestFitForWeight)       
     }
+    return mapStuff
 }
 
     function printmap(mapToPrint)  {        
-
         mapToPrint.forEach(element => {
             console.log(element)
         });
-
-
     }
-
-
 
 main()
