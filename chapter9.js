@@ -57,8 +57,10 @@ function main ()  {
 function createMapForWeights(equipments) {
     var mapStuff = new Map()
     
-    let equipmentsLength = equipments.length 
-    for (let index = 1; index <= equipmentsLength; index++) {        
+    // let equipmentsLength = equipments.length     
+    // for (let index = 1; index <= equipmentsLength; index++) {        
+    let weightLimit = 4;
+        for (let index = 1; index <= weightLimit; index++) {        
                 
         var positionBestFitForWeight = selectPositionBestFit(equipments, index)        
         var bestFitForWeight = equipments[positionBestFitForWeight]        
