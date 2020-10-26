@@ -1,32 +1,4 @@
 //import {reverseDefaultSort} from './sort-algorithms'
-
-function selectPositionBestFit(equipments, limitWeight, equipmentIndex, mappedEquipments) {
-
-    for (let index = equipments.length - 1; index >= 0; index--) {
-
-        var equipmentSelected
-        var positionEquipmentSelected
-        if (equipments[index].weight <= limitWeight) {
-
-            if ((equipmentSelected === undefined)
-                || (equipmentSelected != undefined
-                    && (equipments[index].weight > equipmentSelected.weight))) {
-
-                    // if (equipmentSelected.weight < limitWeight && )
-                    
-                equipmentSelected = equipments[index]
-                positionEquipmentSelected = index
-            }
-
-
-        }
-
-    }
-    mappedEquipments[equipmentIndex, limitWeight] = equipmentSelected
-
-    return positionEquipmentSelected
-}
-
 function createEquipmentsArray() {
     var equipments = []
     equipments[0] = {
@@ -59,6 +31,77 @@ function main() {
     var returnMap = createMapForWeights(equipments)
 
     printmap(returnMap)
+}
+var calculateTotalPrice = (equipmentSelected) => {
+    var totalPrice = 0
+    if (equipmentSelected != undefined) {
+        totalPrice = equipmentSelected.price
+        
+        if (equipmentSelected.link != undefined) {
+            totalPrice += calculateTotalPrice(equipmentSelected.link)
+        }
+        //lastMaxEquipment.price    
+    }
+    return totalPrice
+}
+
+function selectPositionBestFit(equipments, yIndex, xIndex, mappedEquipments) {
+    
+    for (let index = 0; index < equipments.length; index++) {
+
+        var equipmentSelected
+        var positionEquipmentSelected
+        if (equipments[index].weight <= yIndex) {
+
+            if ((equipmentSelected === undefined)
+                || (equipmentSelected != undefined
+                    && (equipments[index].weight > equipmentSelected.weight))) {
+
+                        if (xIndex > 0) {
+                            var lastMaxEquipment = mappedEquipments[(xIndex-1), yIndex]
+                            
+
+                            if (equipments[index].weight < yIndex) {
+                                var remainingWeight = yIndex - equipments[index].weight
+                                var equipmentWithSameRemainingWeight = mappedEquipments[(xIndex-1), remainingWeight]
+
+                                var totalPrice = calculateTotalPrice(equipmentWithSameRemainingWeight)
+
+                                var lastMaxPrice = 0
+                                if (lastMaxEquipment != undefined) {
+                                    lastMaxPrice = calculateTotalPrice(lastMaxEquipment)
+                                }
+
+                                //  if (equipmentWithSameRemainingWeight != undefined) {
+                                //     totalPrice +=
+                                // }
+                               // console.log('lastMaxPrice: ',  lastMaxPrice, "  - totalprice: ", totalPrice )
+                                if (lastMaxEquipment < totalPrice) {                                                                        
+                                     equipmentSelected = equipments[index].link = equipmentWithSameRemainingWeight
+                                }
+                                
+                            }
+                            // if (lastMaxEquipment != undefined && calculateTotalPrice(lastMaxEquipment) < equipments[index].price) {
+
+                            // }
+                        }
+
+                    // if (equipmentSelected.weight < limitWeight) && equipmentSelected.selec > ) {
+
+                    // }
+                    
+                // equipmentSelected = equipments[index]
+                // positionEquipmentSelected = index
+            }
+            
+            // mappedEquipments[xIndex, yIndex] = equipmentSelected
+        }
+
+    }
+    mappedEquipments[xIndex, yIndex] = equipmentSelected       
+    // console.log('equipSelec: ', equipmentSelected)
+
+    return mappedEquipments
 }
 
 function createMapForWeights(equipments) {
@@ -100,9 +143,25 @@ function createMapForWeights(equipments) {
 }
 
 function printmap(mapToPrint) {
-    mapToPrint.forEach(element => {
-        console.log(element)
-    });
+    for (var x = 0; x < mapToPrint.length; x++) {
+        var xDimensionObject = mapToPrint[x]
+        if (xDimensionObject != undefined) {
+            if (xDimensionObject.length > 1) {
+                for (var y = 0; y < xDimensionObject.length; y++) {
+                    console.log('@@: ', xDimensionObject[y])
+                }
+    
+            } else {
+    
+                console.log(xDimensionObject) 
+            }
+        }
+
+    }
+    
+    // mapToPrint.forEach(element => {
+    //     console.log(element)
+    // });
 }
 
 main()
