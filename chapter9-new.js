@@ -36,7 +36,7 @@ var calculateTotalPrice = (equipmentSelected) => {
     var totalPrice = 0
     if (equipmentSelected != undefined) {
         totalPrice = equipmentSelected.price
-        
+
         if (equipmentSelected.link != undefined) {
             totalPrice += calculateTotalPrice(equipmentSelected.link)
         }
@@ -46,63 +46,52 @@ var calculateTotalPrice = (equipmentSelected) => {
 }
 
 function selectPositionBestFit(equipments, yIndex, xIndex, mappedEquipments) {
-    
+
     for (let index = 0; index < equipments.length; index++) {
+        var indexEquipment = equipments[index]
+        if (indexEquipment.weight <= yIndex) {
 
-        var equipmentSelected
-        var positionEquipmentSelected
-        if (equipments[index].weight <= yIndex) {
+            var lastMaxEquipment = undefined
+            if (xIndex > 0) {
 
-            if ((equipmentSelected === undefined)
-                || (equipmentSelected != undefined
-                    && (equipments[index].weight > equipmentSelected.weight))) {
-
-                        if (xIndex > 0) {
-                            var lastMaxEquipment = mappedEquipments[(xIndex-1), yIndex]
-                            
-
-                            if (equipments[index].weight < yIndex) {
-                                var remainingWeight = yIndex - equipments[index].weight
-                                var equipmentWithSameRemainingWeight = mappedEquipments[(xIndex-1), remainingWeight]
-
-                                var totalPrice = calculateTotalPrice(equipmentWithSameRemainingWeight)
-
-                                var lastMaxPrice = 0
-                                if (lastMaxEquipment != undefined) {
-                                    lastMaxPrice = calculateTotalPrice(lastMaxEquipment)
-                                }
-
-                                //  if (equipmentWithSameRemainingWeight != undefined) {
-                                //     totalPrice +=
-                                // }
-                               // console.log('lastMaxPrice: ',  lastMaxPrice, "  - totalprice: ", totalPrice )
-                                if (lastMaxEquipment < totalPrice) {                                                                        
-                                     equipmentSelected = equipments[index].link = equipmentWithSameRemainingWeight
-                                }
-                                
-                            }
-                            // if (lastMaxEquipment != undefined && calculateTotalPrice(lastMaxEquipment) < equipments[index].price) {
-
-                            // }
-                        }
-
-                    // if (equipmentSelected.weight < limitWeight) && equipmentSelected.selec > ) {
-
-                    // }
-                    
-                // equipmentSelected = equipments[index]
-                // positionEquipmentSelected = index
+                lastMaxEquipment = mappedEquipments[(xIndex - 1), yIndex]
+                // console.log('lastMaxEquipment: ', lastMaxEquipment)
             }
-            
-            // mappedEquipments[xIndex, yIndex] = equipmentSelected
+            console.log('xIndex: ', xIndex)
+            if (indexEquipment.weight < yIndex) {
+                var remainingWeight = yIndex - indexEquipment.weight
+                var equipmentWithSameRemainingWeight = mappedEquipments[(xIndex - 1), remainingWeight]
+
+                if (xIndex === 0) { // quer dizer que é a primeira linha    
+                    console.log("!!!!")                
+                    if (mappedEquipments[xIndex, yIndex] == undefined) {
+                        mappedEquipments[xIndex, yIndex] = equipmentSelected
+                    } else if (indexEquipment.weight > mappedEquipments[xIndex, yIndex].weight)
+                        mappedEquipments[xIndex, yIndex] = equipmentSelected
+                }
+
+            } else {
+                var totalPrice = calculateTotalPrice(equipmentWithSameRemainingWeight)
+
+                var lastMaxPrice = 0
+                if (lastMaxEquipment != undefined) {
+                    lastMaxPrice = calculateTotalPrice(lastMaxEquipment)
+                }
+                // console.log('lastMaxEquipment: ', lastMaxEquipment, "- totalPrice: ", totalPrice)
+                //    console.log('last: ', lastMaxEquipment, ' - total: ', totalPrice)
+                if (lastMaxEquipment < totalPrice) {
+                    var equipmentSelected = equipments[index].link = equipmentWithSameRemainingWeight
+                    mappedEquipments[xIndex, yIndex] = equipmentSelected
+                }
+            }
+
+
+
         }
-
     }
-    mappedEquipments[xIndex, yIndex] = equipmentSelected       
-    // console.log('equipSelec: ', equipmentSelected)
-
     return mappedEquipments
 }
+
 
 function createMapForWeights(equipments) {
     let mapStuff = [[]]
@@ -114,31 +103,12 @@ function createMapForWeights(equipments) {
 
     for (let equipmentIndex = 1; equipmentIndex <= equipmentsQty; equipmentIndex++) {
         var subGroupEquipments = equipments.slice(0, equipmentIndex)
-        for (let weightIndex = 1; weightIndex <= weightLimit; weightIndex++) {           
-
-            var positionBestFitForWeight = selectPositionBestFit(subGroupEquipments, weightIndex, equipmentIndex, mapStuff)
-            var bestFitForWeight = equipments[positionBestFitForWeight]
-          //  console.log('index: ', weightIndex, ' - bestFit: ', bestFitForWeight)
-
-
-            //only add this block of code if you want to remove object after select it
-
-            // if (positionBestFitForWeight === 0) {                
-            //     equipments.shift()  
-            // } else if (positionBestFitForWeight === equipments.length) {        
-            //     equipments.pop()
-            // } else {       
-            //     equipments.splice(positionBestFitForWeight, 1)
-            // }
-            //mapStuff.set(weightIndex, bestFitForWeight)
-            //console.log('equip: ', equipmentIndex, ' - weight: ', weightIndex, ' - best: ', bestFitForWeight)
-
-
-            // mapStuff[equipmentIndex, weightIndex] = bestFitForWeight
-
+        for (let weightIndex = 1; weightIndex <= weightLimit; weightIndex++) {
+            mapStuff = selectPositionBestFit(subGroupEquipments, weightIndex, equipmentIndex, mapStuff)
+            //var bestFitForWeight = equipments[positionBestFitForWeight]
         }
     }
-    
+
     return mapStuff
 }
 
@@ -150,15 +120,15 @@ function printmap(mapToPrint) {
                 for (var y = 0; y < xDimensionObject.length; y++) {
                     console.log('@@: ', xDimensionObject[y])
                 }
-    
+
             } else {
-    
-                console.log(xDimensionObject) 
+
+                console.log(xDimensionObject)
             }
         }
 
     }
-    
+
     // mapToPrint.forEach(element => {
     //     console.log(element)
     // });
