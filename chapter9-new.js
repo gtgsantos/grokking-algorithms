@@ -45,45 +45,58 @@ var calculateTotalPrice = (equipmentSelected) => {
     return totalPrice
 }
 
-function selectPositionBestFit(equipments, yIndex, xIndex, mappedEquipments) {
-
+function selectPositionBestFit(equipments, xIndex, weightLimit, mappedEquipments) {
     for (let index = 0; index < equipments.length; index++) {
+        var yIndex = weightLimit - 1
         var indexEquipment = equipments[index]
-        if (indexEquipment.weight <= yIndex) {
+        if (indexEquipment.weight <= weightLimit) {
 
-            var lastMaxEquipment = undefined
-            if (xIndex > 0) {
-
-                lastMaxEquipment = mappedEquipments[(xIndex - 1), yIndex]
-                // console.log('lastMaxEquipment: ', lastMaxEquipment)
+            if (xIndex === 0) {                
+                if ((mappedEquipments[xIndex, yIndex] === undefined) 
+                || (mappedEquipments[xIndex, yIndex].price < indexEquipment.price)) {
+                    console.log(equipments)
+                    mappedEquipments[xIndex, yIndex] = indexEquipment
+                }
+                  //  && mappedEquipments[xIndex, yIndex].weight <) 
             }
-            console.log('xIndex: ', xIndex)
-            if (indexEquipment.weight < yIndex) {
-                var remainingWeight = yIndex - indexEquipment.weight
-                var equipmentWithSameRemainingWeight = mappedEquipments[(xIndex - 1), remainingWeight]
+            // var lastMaxEquipment = undefined
 
-                if (xIndex === 0) { // quer dizer que é a primeira linha    
-                    console.log("!!!!")                
-                    if (mappedEquipments[xIndex, yIndex] == undefined) {
-                        mappedEquipments[xIndex, yIndex] = equipmentSelected
-                    } else if (indexEquipment.weight > mappedEquipments[xIndex, yIndex].weight)
-                        mappedEquipments[xIndex, yIndex] = equipmentSelected
-                }
+            // if (xIndex > 0) {
+            //     lastMaxEquipment = mappedEquipments[(xIndex - 1), (weightLimit - 1)]
+            //     //console.log('lastMaxEquipment: ', lastMaxEquipment)
+            //     mappedEquipments[xIndex, yIndex] = lastMaxEquipment
+            // }
 
-            } else {
-                var totalPrice = calculateTotalPrice(equipmentWithSameRemainingWeight)
+            // if (indexEquipment.weight < weightLimit) {
+            //     var remainingWeight = weightLimit - indexEquipment.weight
+            //     var equipmentWithSameRemainingWeight = mappedEquipments[(xIndex - 1), remainingWeight]
 
-                var lastMaxPrice = 0
-                if (lastMaxEquipment != undefined) {
-                    lastMaxPrice = calculateTotalPrice(lastMaxEquipment)
-                }
-                // console.log('lastMaxEquipment: ', lastMaxEquipment, "- totalPrice: ", totalPrice)
-                //    console.log('last: ', lastMaxEquipment, ' - total: ', totalPrice)
-                if (lastMaxEquipment < totalPrice) {
-                    var equipmentSelected = equipments[index].link = equipmentWithSameRemainingWeight
-                    mappedEquipments[xIndex, yIndex] = equipmentSelected
-                }
-            }
+            //     if (xIndex === 0) {                     
+            //         // quer dizer que é a primeira linha
+            //         console.log('mappedEquipments[', xIndex, ', ', weightLimit, ']')
+            //         if (mappedEquipments[xIndex, weightLimit] == undefined) {
+            //             console.log('111')
+
+            //             mappedEquipments[xIndex, weightLimit] = equipmentSelected
+            //         } else if (indexEquipment.weight > mappedEquipments[xIndex, weightLimit].weight)
+            //         console.log('222')
+            //             mappedEquipments[xIndex, weightLimit] = equipmentSelected
+            //     }
+
+            // } else {
+            //     var totalPrice = calculateTotalPrice(equipmentWithSameRemainingWeight)
+
+            //     var lastMaxPrice = 0
+            //     if (lastMaxEquipment != undefined) {
+            //         lastMaxPrice = calculateTotalPrice(lastMaxEquipment)
+            //     }
+            //     // console.log('lastMaxEquipment: ', lastMaxEquipment, "- totalPrice: ", totalPrice)
+            //     //    console.log('last: ', lastMaxEquipment, ' - total: ', totalPrice)
+            //     if (lastMaxEquipment < totalPrice) {
+            //         var equipmentSelected = equipments[index].link = equipmentWithSameRemainingWeight
+            //         mappedEquipments[xIndex, weightLimit] = equipmentSelected
+            //     }
+            // }
 
 
 
@@ -96,16 +109,15 @@ function selectPositionBestFit(equipments, yIndex, xIndex, mappedEquipments) {
 function createMapForWeights(equipments) {
     let mapStuff = [[]]
 
-    // let equipmentsLength = equipments.length     
-    // for (let index = 1; index <= equipmentsLength; index++) {        
     const weightLimit = 4;
     const equipmentsQty = equipments.length
 
-    for (let equipmentIndex = 1; equipmentIndex <= equipmentsQty; equipmentIndex++) {
-        var subGroupEquipments = equipments.slice(0, equipmentIndex)
+    for (let equipmentIndex = 0; equipmentIndex < equipmentsQty; equipmentIndex++) {
+        var subGroupEquipments = equipments.slice(0, equipmentIndex + 1)
         for (let weightIndex = 1; weightIndex <= weightLimit; weightIndex++) {
-            mapStuff = selectPositionBestFit(subGroupEquipments, weightIndex, equipmentIndex, mapStuff)
-            //var bestFitForWeight = equipments[positionBestFitForWeight]
+            // console.log('x: ', equipmentIndex, '- y: ', weightIndex)
+
+            mapStuff = selectPositionBestFit(subGroupEquipments, equipmentIndex, weightIndex, mapStuff)
         }
     }
 
