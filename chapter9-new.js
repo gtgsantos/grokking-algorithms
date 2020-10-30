@@ -28,7 +28,13 @@ function main() {
 
     var equipments = createEquipmentsArray()
 
-    var returnMap = createMapForWeights(equipments)
+    // var returnMap = createMapForWeights(equipments)
+
+    //////////////////////////////////
+    var returnMap = new Array(Array());
+    selectPositionBestFit(equipments, 0, 3, returnMap)
+
+    //////////////////////////////////
 
     printmap(returnMap)
 }
@@ -46,18 +52,32 @@ var calculateTotalPrice = (equipmentSelected) => {
 }
 
 function selectPositionBestFit(equipments, xIndex, weightLimit, mappedEquipments) {
+    //  console.log('mappedEquipments', mappedEquipments)
+     
     for (let index = 0; index < equipments.length; index++) {
         var yIndex = weightLimit - 1
         var indexEquipment = equipments[index]
+        // console.log('yindex: ', yIndex)
+        //console.log('xindex: ', xIndex, ' - yIndex: ', yIndex, ' - weight: ', weightLimit, ' - index: ', index)
+        // console.log('indexEquipment.weight: ', indexEquipment.weight)               
         if (indexEquipment.weight <= weightLimit) {
 
             if (xIndex === 0) {                
-                if ((mappedEquipments[xIndex, yIndex] === undefined) 
-                || (mappedEquipments[xIndex, yIndex].price < indexEquipment.price)) {
-                    console.log(equipments)
-                    mappedEquipments[xIndex, yIndex] = indexEquipment
+                // mapEquipmentsZeroIndex(mappedEquipments, yIndex, indexEquipment)
+                if ((mappedEquipments[xIndex][yIndex] === undefined) 
+                || (mappedEquipments[xIndex, yIndex].price < indexEquipment.price)) {        
+                mappedEquipments[xIndex, yIndex] = indexEquipment        
                 }
-                  //  && mappedEquipments[xIndex, yIndex].weight <) 
+            } else {
+                if ((mappedEquipments[xIndex][yIndex] === undefined) 
+                || (mappedEquipments[xIndex, yIndex].price < indexEquipment.price)) {        
+                mappedEquipments[xIndex, yIndex] = indexEquipment
+        
+            }
+                // console.log('x: ',(mappedEquipments[xIndex][yIndex] === undefined))
+                // if (mappedEquipments[xIndex, yIndex] === undefined) {
+                //     mappedEquipments[xIndex, yIndex] = indexEquipment
+                // }
             }
             // var lastMaxEquipment = undefined
 
@@ -102,9 +122,21 @@ function selectPositionBestFit(equipments, xIndex, weightLimit, mappedEquipments
 
         }
     }
+    console.table(mappedEquipments)
     return mappedEquipments
 }
 
+
+function mapEquipmentsZeroIndex(mappedEquipments, yIndex, indexEquipment) {
+    var xIndex = 0
+
+    if ((mappedEquipments[xIndex][yIndex] === undefined) 
+        || (mappedEquipments[xIndex, yIndex].price < indexEquipment.price)) {        
+        mappedEquipments[xIndex, yIndex] = indexEquipment
+
+    }
+
+}
 
 function createMapForWeights(equipments) {
     let mapStuff = [[]]
@@ -115,9 +147,9 @@ function createMapForWeights(equipments) {
     for (let equipmentIndex = 0; equipmentIndex < equipmentsQty; equipmentIndex++) {
         var subGroupEquipments = equipments.slice(0, equipmentIndex + 1)
         for (let weightIndex = 1; weightIndex <= weightLimit; weightIndex++) {
-            // console.log('x: ', equipmentIndex, '- y: ', weightIndex)
+            //console.log('x: ', equipmentIndex, '- y: ', weightIndex)
 
-            mapStuff = selectPositionBestFit(subGroupEquipments, equipmentIndex, weightIndex, mapStuff)
+            //mapStuff = selectPositionBestFit(subGroupEquipments, equipmentIndex, weightIndex, mapStuff)
         }
     }
 
