@@ -19,23 +19,60 @@ Deno.test("Create Equipments Array", function (): void {
     assertEquals(equipmentsArray, equipments);
 });
 
-Deno.test("Calculate total price: equipment without link", function (): void {    
-    var equipment = { name: "guitar", weight: 1, price: 1500, link: undefined }    
+Deno.test("Calculate total price: equipment without link", function (): void {
+    var equipment = { name: "guitar", weight: 1, price: 1500, link: undefined }
     var resultPrice = calculateTotalPrice(equipment)
 
     assertEquals(resultPrice, 1500);
 });
 
-Deno.test("Calculate total price: equipment with link", function (): void {
-    
-    let equipment = { name: "guitar", weight: 1, price: 1500, link: 
-        {name: "laptop",weight: 3,price: 2000, link: undefined} 
-    }   
-    
+Deno.test("Calculate total price: equipment with link (first level)", function (): void {
+
+    let equipment = {
+        name: "guitar", weight: 1, price: 1500, link:
+            { name: "laptop", weight: 3, price: 2000, link: undefined }
+    }
+
     var resultPrice = calculateTotalPrice(equipment)
     assertEquals(resultPrice, 3500);
 
 });
+
+Deno.test("Calculate total price: equipment with link (fourth level)", function (): void {
+
+    let equipment = {
+        name: "guitar", weight: 1, price: 1500, link:
+        {
+            name: "laptop", weight: 3, price: 2000, link:
+            {
+                name: "book", weight: 1, price: 200, link:
+                    { name: "stereo", weight: 4, price: 3000, link: undefined }
+            }
+        }
+    }
+
+    var resultPrice = calculateTotalPrice(equipment)
+    assertEquals(resultPrice, 6700);
+
+});
+
+// Deno.test("Printmap: printing a equipment", function (): void {
+
+//     var equipment = {
+//         name: "guitar", weight: 1, price: 1500, link:
+//             { name: "laptop", weight: 3, price: 2000, link: undefined }
+//     }
+//     var mapEquip = new Map()
+//     mapEquip.set(1, equipment)
+
+//     var equipmentString = '# name: guitar, price: 1500'
+
+//     var resultPrice = printmap(mapEquip)
+//     assertEquals(resultPrice, equipmentString);
+
+// });
+
+// console.log('####: ' + objeto)
 
 // Deno.test({
 //   name: "testing example",
