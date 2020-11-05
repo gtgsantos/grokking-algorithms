@@ -23,4 +23,7 @@ or
 ex.: `deno run example.js`
 
 
+if you want to run tests, please use deno instead node.
+
+
 thats it.
