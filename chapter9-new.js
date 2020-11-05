@@ -1,21 +1,21 @@
 //import {reverseDefaultSort} from './sort-algorithms'
 function createEquipmentsArray() {
     var equipments = new Map()
-    equipments.get(0, {
+    equipments.set(0, {
         name: "guitar",
         weight: 1,
         price: 1500,
         link: undefined
     })
 
-    equipments.get(2, {
+    equipments.set(2, {
         name: "laptop",
         weight: 3,
         price: 2000,
         link: undefined
     })
 
-    equipments.get(1, {
+    equipments.set(1, {
         name: "stereo",
         weight: 4,
         price: 3000,
@@ -32,12 +32,13 @@ function main() {
     // var returnMap = createMapForWeights(equipments)
 
     //////////////////////////////////
-    var returnMap = new Map()//Array(Array());
-    selectPositionBestFit(equipments, 0, 3, returnMap)
+    // var returnMap = new Map()//Array(Array());
+    // selectPositionBestFit(equipments, 0, 3, returnMap)
 
     //////////////////////////////////
 
-    printmap(returnMap)
+    printmap(equipments)
+    // printmap(returnMap)
 }
 var calculateTotalPrice = (equipmentSelected) => {
     var totalPrice = 0
@@ -155,36 +156,40 @@ function createMapForWeights(equipments) {
 }
 
 function printmap(mapToPrint) {
-    console.log('@@@', mapToPrint.keys())
+    // console.log('@@@', mapToPrint.keys())
 
-    if (mapToPrint.keys() != undefined) {
-        mapToPrint.keys().forEach(element1 => {
-            this.get(element1).forEach(element2 => {
-                var objeto = this.get(element2)
-                console.log('####: ' + objeto)
-            });
-        });
-    }
+    // // if (mapToPrint.keys().length > 0) {        
+    // //     mapToPrint.keys().forEach(element1 => {
+    // //         this.get(element1).forEach(element2 => {
+    // //             var objeto = this.get(element2)
+    // //             console.log('####: ' + objeto)
+    // //         });
+    // //     });
+    // // }
 
     
-    // for (var x = 0; x < mapToPrint.length; x++) {
-    mapToPrint.getAt(x).keys().forEach(element1 => {
-        var xDimensionObject = this.get(element1)
+    // // for (var x = 0; x < mapToPrint.length; x++) {
+    // mapToPrint.keys().forEach(element1 => {
+    //     var xDimensionObject = this.get(element1)
 
-        if (xDimensionObject != undefined) {
-            if (xDimensionObject.keys().length > 1) {
-                xDimensionObject.keys().forEach(element2 => {
-                    console.log('@@: ', xDimensionObject.getAt(element2))
-                })
-            } else {
-                console.log(xDimensionObject)
-            }
-        }
+    //     if (xDimensionObject != undefined) {
+    //         if (xDimensionObject.keys().length > 1) {
+    //             xDimensionObject.keys().forEach(element2 => {
+    //                 console.log('@@: ', xDimensionObject.getAt(element2))
+    //             })
+    //         } else {
+    //             console.log(xDimensionObject)
+    //         }
+    //     }
 
-        // mapToPrint.forEach(element => {
-        //     console.log(element)
-        // });
-    })
+    //     // mapToPrint.forEach(element => {
+    //     //     console.log(element)
+    //     // });
+    // })
 }
 
 main()
+
+
+export {printmap, calculateTotalPrice, createMapForWeights, selectPositionBestFit, mapEquipmentsZeroIndex, createEquipmentsArray}
+        
