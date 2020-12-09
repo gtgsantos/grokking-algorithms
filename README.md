@@ -23,5 +23,8 @@ or
 ex.: `deno run example.js`
 
 
+or use `npm run test` for chapter 9+ code.
+
+
 
 thats it.
