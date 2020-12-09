@@ -5,8 +5,7 @@ Map.prototype.getAt = function (...positions) {
             var itemArray = this.get(positions.shift())
 
             if (itemArray != undefined) {
-                if (positions.length == 1) {
-                    console.log('>>>>>>>>>>>', itemArray)
+                if (positions.length == 1) {                    
                     result = itemArray.get(positions.shift())
                 } else {
                     result = itemArray.getAt.apply(itemArray, positions)
@@ -82,11 +81,14 @@ mapObjectsByWeightAndValue = (equipments, weight) => {
 }
 
 checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
+   
     var mapLevel = mappedObjects.size
     var remainingWeight = limitWeight - returnedObject.weight
-    if (remainingWeight > 0 && mapLevel > 0) {
-
-        returnedObject.link = mappedObjects.getAt(mapLevel, remainingWeight)
+    console.log('>>>>>>>> ', remainingWeight, ' - ', mapLevel)
+    if (remainingWeight > 0 && mapLevel > 0) { 
+            console.log('><><><> ', mappedObjects)       
+        // returnedObject.link = mappedObjects.getAt(remainingWeight, mapLevel)
+        returnedObject.link = mappedObjects.getAt((mapLevel - 1), remainingWeight)
     }
     return returnedObject
 }
