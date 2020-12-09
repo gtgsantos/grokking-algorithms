@@ -1,5 +1,27 @@
-//import {reverseDefaultSort} from './sort-algorithms'
-function createEquipmentsArray() {
+Map.prototype.getAt = function (...positions) {
+    var result = undefined
+    if (this != undefined) {
+        if (positions.length > 0) {
+            var itemArray = this.get(positions.shift())
+
+            if (itemArray != undefined) {
+                if (positions.length == 1) {
+                    console.log('>>>>>>>>>>>', itemArray)
+                    result = itemArray.get(positions.shift())
+                } else {
+                    result = itemArray.getAt.apply(itemArray, positions)
+                }
+            }
+        } else {
+            result = this
+        }
+    }
+    return result
+
+}
+
+
+createEquipmentsArray = () => {
     var equipments = new Map()
     equipments.set(0, {
         name: "guitar",
@@ -25,171 +47,73 @@ function createEquipmentsArray() {
     return equipments
 }
 
-function main() {
-
-    var equipments = createEquipmentsArray()
-
-    // var returnMap = createMapForWeights(equipments)
-
-    //////////////////////////////////
-    // var returnMap = new Map()//Array(Array());
-    // selectPositionBestFit(equipments, 0, 3, returnMap)
-
-    //////////////////////////////////
-
-    printmap(equipments)
-    // printmap(returnMap)
-}
-var calculateTotalPrice = (equipmentSelected) => {
+calculateTotalPrice = (equipmentSelected) => {
+    var equipmentReference = equipmentSelected
     var totalPrice = 0
-    if (equipmentSelected != undefined) {
-        totalPrice = equipmentSelected.price
+    console.log(equipmentReference)
+    if (equipmentReference != undefined) {
+        totalPrice = equipmentReference.price
 
-        if (equipmentSelected.link != undefined) {
-            totalPrice += calculateTotalPrice(equipmentSelected.link)
+        while (equipmentReference.link != null) {
+            equipmentReference = equipmentReference.link
+            totalPrice += equipmentReference.price
         }
-        //lastMaxEquipment.price    
     }
     return totalPrice
 }
 
-function selectPositionBestFit(equipments, xIndex, weightLimit, mappedEquipments) {
-    //  console.log('mappedEquipments', mappedEquipments)
 
-    for (let index = 0; index < equipments.length; index++) {
-        var yIndex = weightLimit - 1
-        var indexEquipment = equipments.getAt(index)
-        // console.log('yindex: ', yIndex)
-        //console.log('xindex: ', xIndex, ' - yIndex: ', yIndex, ' - weight: ', weightLimit, ' - index: ', index)
-        // console.log('indexEquipment.weight: ', indexEquipment.weight)               
-        if (indexEquipment.weight <= weightLimit) {
+mapObjectsByWeightAndValue = (equipments, weight) => {
 
-            if (xIndex === 0) {
-                // mapEquipmentsZeroIndex(mappedEquipments, yIndex, indexEquipment)
-                if ((mappedEquipments.getAt(xIndex, yIndex) === undefined)
-                    || (mappedEquipments(xIndex, yIndex).price < indexEquipment.price)) {
-                    mappedEquipments.getAt(xIndex).set(yIndex, indexEquipment)
-                }
-            } else {
-                if ((mappedEquipments.getAt(xIndex, yIndex) === undefined)
-                    || (mappedEquipments(xIndex, yIndex).price < indexEquipment.price)) {
-                    mappedEquipments.getAt(xIndex).set(yIndex, indexEquipment)
-                }
+    var returnObject = undefined
+    for (let i = 0; i < equipments.size; i++) {
+        var equipment = equipments.get(i);
 
+        if (equipment.weight <= weight) {
+
+            if (returnObject == undefined
+                || equipment.price > returnObject.price) {
+                returnObject = equipment
             }
-            // console.log('x: ',(mappedEquipments[xIndex][yIndex] === undefined))
-            // if (mappedEquipments[xIndex, yIndex] === undefined) {
-            //     mappedEquipments[xIndex, yIndex] = indexEquipment
-            // }
-        }
-        // var lastMaxEquipment = undefined
-
-        // if (xIndex > 0) {
-        //     lastMaxEquipment = mappedEquipments[(xIndex - 1), (weightLimit - 1)]
-        //     //console.log('lastMaxEquipment: ', lastMaxEquipment)
-        //     mappedEquipments[xIndex, yIndex] = lastMaxEquipment
-        // }
-
-        // if (indexEquipment.weight < weightLimit) {
-        //     var remainingWeight = weightLimit - indexEquipment.weight
-        //     var equipmentWithSameRemainingWeight = mappedEquipments[(xIndex - 1), remainingWeight]
-
-        //     if (xIndex === 0) {                     
-        //         // quer dizer que é a primeira linha
-        //         console.log('mappedEquipments[', xIndex, ', ', weightLimit, ']')
-        //         if (mappedEquipments[xIndex, weightLimit] == undefined) {
-        //             console.log('111')
-
-        //             mappedEquipments[xIndex, weightLimit] = equipmentSelected
-        //         } else if (indexEquipment.weight > mappedEquipments[xIndex, weightLimit].weight)
-        //         console.log('222')
-        //             mappedEquipments[xIndex, weightLimit] = equipmentSelected
-        //     }
-
-        // } else {
-        //     var totalPrice = calculateTotalPrice(equipmentWithSameRemainingWeight)
-
-        //     var lastMaxPrice = 0
-        //     if (lastMaxEquipment != undefined) {
-        //         lastMaxPrice = calculateTotalPrice(lastMaxEquipment)
-        //     }
-        //     // console.log('lastMaxEquipment: ', lastMaxEquipment, "- totalPrice: ", totalPrice)
-        //     //    console.log('last: ', lastMaxEquipment, ' - total: ', totalPrice)
-        //     if (lastMaxEquipment < totalPrice) {
-        //         var equipmentSelected = equipments[index].link = equipmentWithSameRemainingWeight
-        //         mappedEquipments[xIndex, weightLimit] = equipmentSelected
-        //     }
-        // }
-
-    }
-
-    printmap(mappedEquipments)
-    return mappedEquipments
-}
-
-
-function mapEquipmentsZeroIndex(mappedEquipments, yIndex, indexEquipment) {
-    var xIndex = 0
-
-    if ((mappedEquipments.getAt(xIndex, yIndex) === undefined)
-        || (mappedEquipments(xIndex, yIndex).price < indexEquipment.price)) {
-        mappedEquipments.getAt(xIndex).set(yIndex, indexEquipment)
-    }
-}
-
-function createMapForWeights(equipments) {
-    let mapStuff = [[]]
-
-    const weightLimit = 4;
-    const equipmentsQty = equipments.length
-
-    for (let equipmentIndex = 0; equipmentIndex < equipmentsQty; equipmentIndex++) {
-        var subGroupEquipments = equipments.slice(0, equipmentIndex + 1)
-        for (let weightIndex = 1; weightIndex <= weightLimit; weightIndex++) {
-            //console.log('x: ', equipmentIndex, '- y: ', weightIndex)
-
-            //mapStuff = selectPositionBestFit(subGroupEquipments, equipmentIndex, weightIndex, mapStuff)
         }
     }
 
-    return mapStuff
+    return returnObject
 }
 
-function printmap(mapToPrint) {
-    // console.log('@@@', mapToPrint.keys())
+checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
+    var mapLevel = mappedObjects.size
+    var remainingWeight = limitWeight - returnedObject.weight
+    if (remainingWeight > 0 && mapLevel > 0) {
 
-    // // if (mapToPrint.keys().length > 0) {        
-    // //     mapToPrint.keys().forEach(element1 => {
-    // //         this.get(element1).forEach(element2 => {
-    // //             var objeto = this.get(element2)
-    // //             console.log('####: ' + objeto)
-    // //         });
-    // //     });
-    // // }
-
-    
-    // // for (var x = 0; x < mapToPrint.length; x++) {
-    // mapToPrint.keys().forEach(element1 => {
-    //     var xDimensionObject = this.get(element1)
-
-    //     if (xDimensionObject != undefined) {
-    //         if (xDimensionObject.keys().length > 1) {
-    //             xDimensionObject.keys().forEach(element2 => {
-    //                 console.log('@@: ', xDimensionObject.getAt(element2))
-    //             })
-    //         } else {
-    //             console.log(xDimensionObject)
-    //         }
-    //     }
-
-    //     // mapToPrint.forEach(element => {
-    //     //     console.log(element)
-    //     // });
-    // })
+        returnedObject.link = mappedObjects.getAt(mapLevel, remainingWeight)
+    }
+    return returnedObject
 }
 
-main()
+returnEquipmentAsString = (equipmentObject) => {
+    var linkString = undefined
+    if (equipmentObject.link != undefined) {
+        linkString = returnEquipmentAsString(equipmentObject.link)
+    }
+
+    return ''.concat('[name: ', equipmentObject.name,
+        ' - weight: ', equipmentObject.weight,
+        ' - price: ', equipmentObject.price,
+        ' - link: ', linkString, ']')
+}
+
+returnEquipmentListAsString = (equipmentList) => {
+    let returnString = ''
+    equipmentList.forEach(element => {
+        returnString += this.returnEquipmentAsString(element)
+    });
+    return returnString
+}
 
 
-export {printmap, calculateTotalPrice, createMapForWeights, selectPositionBestFit, mapEquipmentsZeroIndex, createEquipmentsArray}
-        
+module.exports = {
+    returnEquipmentListAsString, returnEquipmentAsString,
+    checkForLinks, mapObjectsByWeightAndValue,
+    calculateTotalPrice, createEquipmentsArray
+} 

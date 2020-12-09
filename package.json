@@ -1,0 +1,36 @@
+{
+  "name": "grokking-algoritmos",
+  "version": "1.0.0",
+  "description": "algorithms from the book",
+  "main": "bonus1.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "esm": "^3.2.25"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gtgsantos/grokking-algorithms.git"
+  },
+  "keywords": [
+    "grokking",
+    "algorithms",
+    "javascript",
+    "deno",
+    "node",
+    "dijkstra"
+  ],
+  "author": "Guilherme Santos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gtgsantos/grokking-algorithms/issues"
+  },
+  "homepage": "https://github.com/gtgsantos/grokking-algorithms#readme"
+}
