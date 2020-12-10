@@ -84,11 +84,10 @@ checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
    
     var mapLevel = mappedObjects.size
     var remainingWeight = limitWeight - returnedObject.weight
-    console.log('>>>>>>>> ', remainingWeight, ' - ', mapLevel)
-    if (remainingWeight > 0 && mapLevel > 0) { 
-            console.log('><><><> ', mappedObjects)       
+    
+    if (remainingWeight > 0 && mapLevel > 0) {             
         // returnedObject.link = mappedObjects.getAt(remainingWeight, mapLevel)
-        returnedObject.link = mappedObjects.getAt((mapLevel - 1), remainingWeight)
+        returnedObject.link = mappedObjects.getAt(mapLevel, remainingWeight)
     }
     return returnedObject
 }
