@@ -2,7 +2,7 @@
 const { returnEquipmentListAsString, returnEquipmentAsString,
     checkForLinks, mapObjectsByWeightAndValue,
     calculateTotalPrice, createEquipmentsArray,
-    processSubgroupEquipmentsMap } = require('../chapter9-new');
+    processSubgroupEquipmentsMap } = require('../chapter9');
 
 test('should check the equipment list', () => {
     var expected = new Map()
