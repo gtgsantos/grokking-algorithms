@@ -115,7 +115,7 @@ returnEquipmentAsString = (equipmentObject) => {
 returnEquipmentListAsString = (equipmentList) => {
     let returnString = ''
     equipmentList.forEach(element => {
-        returnString += this.returnEquipmentAsString(element)
+        returnString += returnEquipmentAsString(element)
     });
     return returnString
 }

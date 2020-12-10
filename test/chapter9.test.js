@@ -144,12 +144,9 @@ test('should add an Equipment as link from inputObject with 2 of weight, conside
 })
 
 
-test('should create a Equipment map based on amount of equipment has on equipment map and the weight given', () => {
+test('should create a 2nd level Equipment map based on amount of equipment has on equipment map and the weight given', () => {
 
-    var mappedObjects = new Map()
-    // var mapObjects = new Map()
-    
-    // var mapObjectsLevel2 = new Map()
+    var mappedObjects = new Map()   
     var mapObjectsLevel1 = new Map()
     mappedObjects.set(1, mapObjectsLevel1)
     mapObjectsLevel1.set(1, { name: "laptop", weight: 1, price: 2000, link: undefined })
@@ -162,6 +159,15 @@ test('should create a Equipment map based on amount of equipment has on equipmen
     inputMap.set(1, { name: "stereo", weight: 2, price: 3000, link: undefined })
 
 
-    var equipmentSelected = processSubgroupEquipmentsMap(mappedObjects, inputMap, 4)
+    var output = processSubgroupEquipmentsMap(mappedObjects, inputMap, 4)
+
+    var expected = new Map()    
+    expected.set(1, { name: "laptop", weight: 1, price: 2000, link: undefined })
+    expected.set(2, { name: "stereo", weight: 2, price: 3000, link: undefined })
+    expected.set(3, { name: "stereo", weight: 2, price: 3000, link: { name: "laptop", weight: 1, price: 2000, link: undefined } })
+    expected.set(4, { name: "stereo", weight: 2, price: 3000, link: { name: "laptop", weight: 1, price: 2000, link: undefined } })
+
+    
+    expect(returnEquipmentListAsString(output)).toBe(returnEquipmentListAsString(expected))
     
 })
