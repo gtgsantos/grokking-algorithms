@@ -73,10 +73,10 @@ mapObjectsByWeightAndValue = (equipments, weight) => {
 checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
     var mapLevel = mappedObjects.size    
     if (mapLevel > 0) {
-        var remainingWeight = limitWeight - returnedObject.weight
+        var remainingWeightPositive = limitWeight > returnedObject.weight
         
-        if (remainingWeight > 0) {                     
-            returnedObject.link = mappedObjects.getAt(mapLevel, remainingWeight)
+        if (remainingWeightPositive) {                     
+            returnedObject.link = mappedObjects.getAt(mapLevel, (limitWeight - returnedObject.weight))
 
             
         }
