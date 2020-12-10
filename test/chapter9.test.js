@@ -1,7 +1,8 @@
 
 const { returnEquipmentListAsString, returnEquipmentAsString,
     checkForLinks, mapObjectsByWeightAndValue,
-    calculateTotalPrice, createEquipmentsArray } = require('../chapter9-new');
+    calculateTotalPrice, createEquipmentsArray,
+    processSubgroupEquipmentsMap } = require('../chapter9-new');
 
 test('should check the equipment list', () => {
     var expected = new Map()
@@ -140,4 +141,27 @@ test('should add an Equipment as link from inputObject with 2 of weight, conside
     const output = returnEquipmentAsString(checkForLinks(mapObjects, inputObject, 5))
     
     expect(output).toBe(expected)
+})
+
+
+test('should create a Equipment map based on amount of equipment has on equipment map and the weight given', () => {
+
+    var mappedObjects = new Map()
+    // var mapObjects = new Map()
+    
+    // var mapObjectsLevel2 = new Map()
+    var mapObjectsLevel1 = new Map()
+    mappedObjects.set(1, mapObjectsLevel1)
+    mapObjectsLevel1.set(1, { name: "laptop", weight: 1, price: 2000, link: undefined })
+    mapObjectsLevel1.set(2, { name: "laptop", weight: 1, price: 2000, link: undefined })
+    mapObjectsLevel1.set(3, { name: "laptop", weight: 1, price: 2000, link: undefined })
+    mapObjectsLevel1.set(4, { name: "laptop", weight: 1, price: 2000, link: undefined })
+
+    var inputMap = new Map()    
+    inputMap.set(0, { name: "laptop", weight: 1, price: 2000, link: undefined })
+    inputMap.set(1, { name: "stereo", weight: 2, price: 3000, link: undefined })
+
+
+    var equipmentSelected = processSubgroupEquipmentsMap(mappedObjects, inputMap, 4)
+    
 })
