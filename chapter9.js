@@ -56,13 +56,13 @@ calculateTotalPrice = (equipmentSelected) => {
 mapObjectsByWeightAndValue = (equipments, weight) => {   
     var returnObject = undefined
     for (let i = 0; i < equipments.size; i++) {
-        var equipment = equipments.get(i);
+        var equipment = Object.prototype.clone(equipments.get(i));
 
         if (equipment.weight <= weight) {
 
             if (returnObject == undefined
                 || equipment.price > returnObject.price) {
-                returnObject = equipment
+                returnObject = Object.prototype.clone(equipment)
             }
         }
     }
@@ -76,27 +76,37 @@ checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
         var remainingWeightPositive = limitWeight > returnedObject.weight
         
         if (remainingWeightPositive) {                     
-            returnedObject.link = mappedObjects.getAt(mapLevel, (limitWeight - returnedObject.weight))
-
-            
+            returnedObject.link = Object.prototype.clone(mappedObjects.getAt(mapLevel, (limitWeight - returnedObject.weight)))            
         }
     }
     
     return returnedObject
 }
 
-processSubgroupEquipmentsMap = (mappedObjects, subGropupOfEquipments, maxWeight) => {
+processSubgroupEquipmentsMap = (mappedObjects, subGroupOfEquipments, maxWeight) => {
     var equipmentMap = new Map()
-
-    for (let actualWeight = 1; actualWeight <= maxWeight; actualWeight++) {
-        var equipment =  mapObjectsByWeightAndValue(subGropupOfEquipments, actualWeight)        
-        
-        equipment = checkForLinks(mappedObjects, equipment, actualWeight)
-        
+    
+    for (let actualWeight = 1; actualWeight <= maxWeight; actualWeight++) {        
+        var equipment =  mapObjectsByWeightAndValue(subGroupOfEquipments, actualWeight)                
+        equipment = checkForLinks(mappedObjects, equipment, actualWeight)        
         equipmentMap.set(actualWeight, Object.prototype.clone(equipment))
     }
-
+    
     return equipmentMap
+}
+
+processEquipmentsMap = (mapOfEquipments, maxWeight) => {
+    var totalMap = new Map()
+
+    var subGroupOfEquipments = new Map()
+
+    for (let mapIndex = 0; mapIndex < mapOfEquipments.size; mapIndex++) {                
+        subGroupOfEquipments.set(mapIndex, mapOfEquipments.get(mapIndex))
+        var subprocessMap = processSubgroupEquipmentsMap(totalMap, subGroupOfEquipments, maxWeight)
+        totalMap.set(totalMap.size + 1, subprocessMap)
+    }
+
+    return totalMap
 }
 
 
@@ -120,10 +130,21 @@ returnEquipmentListAsString = (equipmentList) => {
     return returnString
 }
 
+returnMapOfEquipmentsMapsAsString = (mapOfEquipmentsMap) => {
+    let returnString = ''
+    
+    mapOfEquipmentsMap.forEach(element => {
+        returnString +=returnEquipmentListAsString(element)
+    });
+    
+    return returnString
+}
+
+
 
 module.exports = {
     returnEquipmentListAsString, returnEquipmentAsString,
     checkForLinks, mapObjectsByWeightAndValue,
     calculateTotalPrice, createEquipmentsArray,
-    processSubgroupEquipmentsMap
+    processSubgroupEquipmentsMap, processEquipmentsMap
 } 
