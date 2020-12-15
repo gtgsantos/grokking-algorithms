@@ -53,16 +53,21 @@ calculateTotalPrice = (equipmentSelected) => {
 }
 
 
-mapObjectsByWeightAndValue = (equipments, weight) => {   
+mapObjectsByWeightAndValue = (mappedObjects, equipments, weight) => {   
     var returnObject = undefined
     for (let i = 0; i < equipments.size; i++) {
         var equipment = Object.prototype.clone(equipments.get(i));
 
-        if (equipment.weight <= weight) {
+        if (weight == 4) {
+            console.log('>>>> ', equipment.name)
+        }
 
-            if (returnObject == undefined
-                || equipment.price > returnObject.price) {
+        if (equipment.weight <= weight) {            
+            
+            equipment = checkForLinks(mappedObjects, equipment, weight)        
+            if (returnObject == undefined  || (calculateTotalPrice(equipment) > calculateTotalPrice(returnObject))) {                
                 returnObject = Object.prototype.clone(equipment)
+
             }
         }
     }
@@ -76,19 +81,35 @@ checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
         var remainingWeightPositive = limitWeight > returnedObject.weight
         
         if (remainingWeightPositive) {                     
-            returnedObject.link = Object.prototype.clone(mappedObjects.getAt(mapLevel, (limitWeight - returnedObject.weight)))            
+            var linkObject = Object.prototype.clone(mappedObjects.getAt(mapLevel, (limitWeight - returnedObject.weight)))            
+            // if (linkObject.name !== returnedObject.name) {
+            if (!checkForSameName(returnedObject, linkObject.name)) {
+                returnedObject.link = linkObject       
+            }
         }
     }
     
     return returnedObject
 }
 
+checkForSameName = (equipment, name) => {
+    var isDifferent = false
+        
+    if (equipment.link !== undefined) {
+        isDifferent = isDifferent || checkForSameName(equipment.link, name)
+    } else if (equipment.name === name) {
+        isDifferent = true
+    }
+
+    return isDifferent
+}
+
 processSubgroupEquipmentsMap = (mappedObjects, subGroupOfEquipments, maxWeight) => {
     var equipmentMap = new Map()
     
     for (let actualWeight = 1; actualWeight <= maxWeight; actualWeight++) {        
-        var equipment =  mapObjectsByWeightAndValue(subGroupOfEquipments, actualWeight)                
-        equipment = checkForLinks(mappedObjects, equipment, actualWeight)        
+        var equipment =  mapObjectsByWeightAndValue(mappedObjects, subGroupOfEquipments, actualWeight)                
+        // equipment = checkForLinks(mappedObjects, equipment, actualWeight)        
         equipmentMap.set(actualWeight, Object.prototype.clone(equipment))
     }
     
@@ -116,7 +137,7 @@ returnEquipmentAsString = (equipmentObject) => {
         linkString = returnEquipmentAsString(equipmentObject.link)
     }
 
-    return ''.concat('[name: ', equipmentObject.name,
+    return '\n'.concat('[name: ', equipmentObject.name,
         ' - weight: ', equipmentObject.weight,
         ' - price: ', equipmentObject.price,
         ' - link: ', linkString, ']')
@@ -134,7 +155,7 @@ returnMapOfEquipmentsMapsAsString = (mapOfEquipmentsMap) => {
     let returnString = ''
     
     mapOfEquipmentsMap.forEach(element => {
-        returnString +=returnEquipmentListAsString(element)
+        returnString +=returnEquipmentListAsString(element) + '\n\n'
     });
     
     return returnString
@@ -146,5 +167,5 @@ module.exports = {
     returnEquipmentListAsString, returnEquipmentAsString,
     checkForLinks, mapObjectsByWeightAndValue,
     calculateTotalPrice, createEquipmentsArray,
-    processSubgroupEquipmentsMap, processEquipmentsMap
+    processSubgroupEquipmentsMap, processEquipmentsMap, checkForSameName
 } 
