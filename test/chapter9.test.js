@@ -1,8 +1,3 @@
-
-// const { returnEquipmentListAsString, returnEquipmentAsString,
-//     checkForLinks, mapObjectsByWeightAndValue,
-//     calculateTotalPrice, createEquipmentsArray,
-//     processSubgroupEquipmentsMap, processEquipmentsMap, checkIfTheresRepeatedNames } = 
 require('../chapter9');
 
 test('should check the equipment list', () => {
@@ -289,6 +284,31 @@ test(`should return true for object with same name at level 3`, () => {
    
 })
 
+test('should return one Object by weight', () => {
+    var inputMap = new Map()
+    inputMap.set(0, { name: "guitar", weight: 1, price: 1500, link: undefined })
+    inputMap.set(1, { name: "stereo", weight: 4, price: 3000, link: undefined })
+    inputMap.set(2, { name: "laptop", weight: 3, price: 2000, link: undefined })
+
+    var expected = returnEquipmentAsString({ name: "guitar", weight: 1, price: 1500, link: undefined })
+
+    var output = mapObjectsByWeightAndValue(new Map(), inputMap, 1)
+
+    expect(returnEquipmentAsString(output)).toBe(expected)
+})
+
+test('should map one Object by weight and value', () => {
+    var inputMap = new Map()
+    inputMap.set(0, { name: "guitar", weight: 1, price: 1500, link: undefined })
+    inputMap.set(1, { name: "stereo", weight: 1, price: 3000, link: undefined })
+    inputMap.set(2, { name: "laptop", weight: 3, price: 2000, link: undefined })
+
+    var expected = returnEquipmentAsString({ name: "stereo", weight: 1, price: 3000, link: undefined })
+
+    var output = mapObjectsByWeightAndValue(new Map(), inputMap, 1)
+
+    expect(returnEquipmentAsString(output)).toBe(expected)
+})
 
 test(`should create and process a equipments map, returning a map of best weights and prices equipments for four equipments with two equipmants with same weight and
 different values`, () => {
@@ -332,36 +352,7 @@ different values`, () => {
    expectedLvl4.set(4, { name: "iphone", weight: 1, price: 2000, link: { name: "laptop", weight: 3, price: 2000, link: undefined }})
 
    expected.set(4, expectedLvl4)
-   
-   console.log(returnMapOfEquipmentsMapsAsString(output))
+      
    expect(returnMapOfEquipmentsMapsAsString(output)).toBe(returnMapOfEquipmentsMapsAsString(expected))
     
 })
-
-test('should return one Object by weight', () => {
-    var inputMap = new Map()
-    inputMap.set(0, { name: "guitar", weight: 1, price: 1500, link: undefined })
-    inputMap.set(1, { name: "stereo", weight: 4, price: 3000, link: undefined })
-    inputMap.set(2, { name: "laptop", weight: 3, price: 2000, link: undefined })
-
-    var expected = returnEquipmentAsString({ name: "guitar", weight: 1, price: 1500, link: undefined })
-
-    var output = mapObjectsByWeightAndValue(new Map(), inputMap, 1)
-
-    expect(returnEquipmentAsString(output)).toBe(expected)
-})
-
-test('should map one Object by weight and value', () => {
-    var inputMap = new Map()
-    inputMap.set(0, { name: "guitar", weight: 1, price: 1500, link: undefined })
-    inputMap.set(1, { name: "stereo", weight: 1, price: 3000, link: undefined })
-    inputMap.set(2, { name: "laptop", weight: 3, price: 2000, link: undefined })
-
-    var expected = returnEquipmentAsString({ name: "stereo", weight: 1, price: 3000, link: undefined })
-
-    var output = mapObjectsByWeightAndValue(new Map(), inputMap, 1)
-
-    expect(returnEquipmentAsString(output)).toBe(expected)
-})
-
-
