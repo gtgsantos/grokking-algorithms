@@ -58,10 +58,6 @@ mapObjectsByWeightAndValue = (mappedObjects, equipments, weight) => {
     for (let i = 0; i < equipments.size; i++) {
         var equipment = Object.prototype.clone(equipments.get(i));
 
-        if (weight == 4) {
-            console.log('>>>> ', equipment.name)
-        }
-
         if (equipment.weight <= weight) {            
             
             equipment = checkForLinks(mappedObjects, equipment, weight)        
@@ -81,9 +77,8 @@ checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
         var remainingWeightPositive = limitWeight > returnedObject.weight
         
         if (remainingWeightPositive) {                     
-            var linkObject = Object.prototype.clone(mappedObjects.getAt(mapLevel, (limitWeight - returnedObject.weight)))            
-            // if (linkObject.name !== returnedObject.name) {
-            if (!checkForSameName(returnedObject, linkObject.name)) {
+            var linkObject = Object.prototype.clone(mappedObjects.getAt(mapLevel, (limitWeight - returnedObject.weight)))                   
+            if (!checkIfTheresRepeatedNames(linkObject, returnedObject)) {
                 returnedObject.link = linkObject       
             }
         }
@@ -92,24 +87,37 @@ checkForLinks = (mappedObjects, returnedObject, limitWeight) => {
     return returnedObject
 }
 
-checkForSameName = (equipment, name) => {
-    var isDifferent = false
-        
-    if (equipment.link !== undefined) {
-        isDifferent = isDifferent || checkForSameName(equipment.link, name)
-    } else if (equipment.name === name) {
-        isDifferent = true
-    }
+checkIfTheresRepeatedNames = (equipment1, equipment2) => {
+    var repeated = false
+    var equipmentList = new Map()
+    var loopEquipment = equipment1
+    var checkEquipment1 = true
 
-    return isDifferent
+    do {
+        
+        if (equipmentList.has(loopEquipment.name)) {
+            repeated = true
+            break
+        } else {            
+
+            equipmentList.set(loopEquipment.name, loopEquipment.name)            
+            loopEquipment = loopEquipment.link
+        }
+        if (checkEquipment1 && (loopEquipment === undefined)) {
+            loopEquipment = equipment2
+            checkEquipment1 = false
+        }
+
+    } while (loopEquipment !== undefined)   
+
+    return repeated
 }
 
 processSubgroupEquipmentsMap = (mappedObjects, subGroupOfEquipments, maxWeight) => {
     var equipmentMap = new Map()
     
     for (let actualWeight = 1; actualWeight <= maxWeight; actualWeight++) {        
-        var equipment =  mapObjectsByWeightAndValue(mappedObjects, subGroupOfEquipments, actualWeight)                
-        // equipment = checkForLinks(mappedObjects, equipment, actualWeight)        
+        var equipment =  mapObjectsByWeightAndValue(mappedObjects, subGroupOfEquipments, actualWeight)                        
         equipmentMap.set(actualWeight, Object.prototype.clone(equipment))
     }
     
@@ -137,7 +145,7 @@ returnEquipmentAsString = (equipmentObject) => {
         linkString = returnEquipmentAsString(equipmentObject.link)
     }
 
-    return '\n'.concat('[name: ', equipmentObject.name,
+    return ''.concat('[name: ', equipmentObject.name,
         ' - weight: ', equipmentObject.weight,
         ' - price: ', equipmentObject.price,
         ' - link: ', linkString, ']')
@@ -155,7 +163,7 @@ returnMapOfEquipmentsMapsAsString = (mapOfEquipmentsMap) => {
     let returnString = ''
     
     mapOfEquipmentsMap.forEach(element => {
-        returnString +=returnEquipmentListAsString(element) + '\n\n'
+        returnString += returnEquipmentListAsString(element) + ''
     });
     
     return returnString
@@ -167,5 +175,5 @@ module.exports = {
     returnEquipmentListAsString, returnEquipmentAsString,
     checkForLinks, mapObjectsByWeightAndValue,
     calculateTotalPrice, createEquipmentsArray,
-    processSubgroupEquipmentsMap, processEquipmentsMap, checkForSameName
+    processSubgroupEquipmentsMap, processEquipmentsMap, checkIfTheresRepeatedNames
 } 
